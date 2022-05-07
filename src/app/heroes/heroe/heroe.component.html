@@ -1,0 +1,18 @@
+<h1>Lista de Heroes</h1>
+
+<dl>
+  <dt>Nombre:</dt>
+  <dd>{{ nombre }}</dd>
+
+  <dt>Edad:</dt>
+  <dd>{{ edad }}</dd>
+
+  <dt>Nombre capitalizado:</dt>
+  <dd>{{ capitalizeNombre }}</dd>
+
+  <dt>Heroe Description:</dt>
+  <dd>{{ heroDescription() }}</dd>
+</dl>
+
+<button (click)="cambiarHeroe()">Cambiar Heroe</button>
+<button (click)="cambiarEdad()">Cambiar Edad</button>
