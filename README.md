@@ -47,7 +47,10 @@ this.numero += valor;
 }
 de la siguiente forma puedo pasar esa propiedad como argumento:
 
+```
+
 <button (click)="acumular(base)">{{ base }}</button>
+```
 
 ---
 
@@ -57,14 +60,18 @@ de la siguiente forma puedo pasar esa propiedad como argumento:
 Teninedo en cuenta que en la class del componete tengo definido el array: string[]= ['Aquaman', 'Superman', 'Batman', 'Ironman', 'Spiderman'];
 Para conseguir una lista, en el HTML defino
 
+```
 <ul>
   <li *ngFor="let hero of heroes">
     {{ hero }}
   </li>
 </ul>
+```
 
 **if Statemens se lleva a cabo con la directiva _ngIf_**
 tambien dentro del HTML, ver ejemplo, teniendo en cuenta que heroeBorrado es una propiedad de mi class el cual correcponde a un array:
+
+```
 
 <h1 *ngIf="heroeBorrado.length > 0 ; else noBorrado" >Heroes Eliminados:</h1>
 <ul>
@@ -78,6 +85,8 @@ tambien dentro del HTML, ver ejemplo, teniendo en cuenta que heroeBorrado es una
 <h3>Aún no hay nada borrado </h3>
 <ng-template>
 
+```
+
 _importante resaltar el else_ se ejecutará si no se cumple laprimer condicion. Para lo cual hay que definir lo que se conoce como una _referencia local_, se llama así ya que solo existira en el HTML y renderizare en el DOM un _ng-template_ especifico solo si esa referencia local es true, utilizandola con un # como en el ejemplo.
 
 ---
@@ -86,12 +95,16 @@ _importante resaltar el else_ se ejecutará si no se cumple laprimer condicion. 
 muy importantes, es para dividir y organzar el projecto. De lo contrario en el app.module se importarían un millonn de componente.
 Lo que se trata es dividir los componentes y agrupar los relacionados bajo el mismo modulo. La estructura Basica de un modulo es :
 
+```
+
 @NgModule({
 declarations: [HeroeComponent, ListadoComponent],
 exports: [ListadoComponent],
 imports: [CommonModule],
 })
 export class HeroesModule {}
+
+```
 
 - NgModule : el decorador
 - declaraciones: son los componentes que estarán dentro del modulo.
