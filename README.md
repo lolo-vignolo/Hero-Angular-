@@ -114,3 +114,118 @@ export class HeroesModule {}
 Ahora bien, como conecto este modulo con el modulo padre? - Simplemente agrego este modulo al _imports_ del componente padre y eso será todo.
 
 otra cosa a tener en cuenta es si uso **directivas** dentro del modulo. Si uso, es importante agregar al _imports_ del modulo el conocido **CommonMoudle**, de lo contrario las directivas no funcionaran.
+
+**eventos formularios** la función en el HTML recibe el argumento _$event_ , importante es el signo $, luego en el method del componente puedo pasar event para hacer el preventDefault(). Esta es una forma de hacerlo. La otra es no definir nada, usar esa función que llama al submit e importat en el modulo el llamado **FormModule**, y cambiar en el HTML el submit por ngSubmit. Ver ejemplos:
+
+Forma basica:
+
+```
+HTML
+ <form (submit)="agregar($event)">
+
+COMP
+agregar(event: any) {
+    event.preventDefault();}
+```
+
+Con FormModule:
+
+```
+  <form (ngSubmit)="agregar()">
+
+  agregar() {}
+
+```
+
+**eventos van a usar ()**
+**[value] = usuario.name** aquí enlazo alguna info de un objeto del componente en el value o alguna attributo en este caso del input.
+
+**hay diferentes formas de agarrar el input** una sería conectando el _value_ del input con el atributo de mi componente : [value]: usuario.name y luego ejecutar el elvento (input) creando una nueva funcion creada en el componente que recibiría el evento, bla bla bla. Como en React. Pero Aquí aparece algo interesante que resuelve todo en pogo codigo el **ngModel** , el cual utilizando la sintaxis **[(ngModel)]** y asignandole el atributo del objeto creado en el componente que quiero cambiar, realiza todo auomaticamente. _importante_ debo crear dentro del input una nueva propiedad llamada name, con el nombre d elo que estoy cambiando.
+
+```
+  <input
+        type="number"
+        placeholder="Poder"
+        name="poder"
+        [(ngModel)]="nuevo.poder"
+      />
+
+```
+
+**pipes** sirven para tranformar visualmente la información y se cologan luego de un | .
+
+---
+
+🛑**info de componente padre a componente hijo** 🚩🚧
+**@Input() inputPersonajes: Personaje[] = [];**
+comunicacion entre componentes, a diferencia de lo que sucede en ract que uso props, aquí utilizo entre otras cosas el decorador **@Input()** con el cual creeare un elemento con las caract. basicas del elemepo a recibir.
+
+ejemplo:
+En el componente personajes necesito la información que proviene de un array ubicado en el componente main.
+
+```
+En el main-component tengo:
+ personajes: Personaje[] = [
+    {
+      nombre: 'Goku',
+      poder: 50000,
+    },]
+
+Por lo que en el componente donde nececito la info haré:
+ @Input() inputPersonajes: Personaje[] = [];
+
+```
+
+Luego debo dirigirme a los HTMLs de dichos componentes y realizar lo sigueinte:
+
+```
+main-component.HTML: voy a insertar el componente y hacer el cambio de info. Lo que está entre [] será la referencia del nuevo componente, a lo que igualo con el nombre del elemento que necesito del componente padre.
+
+<app-personajes [inputPersonajes]="personajes"> </app-personajes>
+
+En el HTML hijo:
+
+ <li *ngFor="let hero of inputPersonajes">
+    {{ hero.nombre }} - {{ hero.poder | number }}
+  </li>
+
+```
+
+**Info componente Hijo al componente padre** 😪💥
+**@Output() onNewPersonaje: EventEmitter<Personaje> = new EventEmitter();** de esta forma lo unico que hago es crear un _evento_ el cual se ejecutará como todos los enventos, en el HTML usando (). Que hace ese evento?.
+1- Lo especifico en el metodo de su componente, en este caso:
+
+```
+@Output() onNewPersonaje: EventEmitter<Personaje> = new EventEmitter();
+agregar() {
+    if (this.nuevo.nombre !== '') {
+      this.onNewPersonaje.emit(this.nuevo);
+      }
+
+```
+
+Teniendo en cuenta que this.nuevo, es un objeto creado una interface Personajes, lo que hará este evento es enviar la info creada al compoonente padre a traves del _emit()_
+
+2- voy al HTML del componente padre.
+
+```
+  <app-agregar (onNewPersonaje)="agregarPeronaje($event)"></app-agregar>
+
+- aquí onNewPersonaje es el evento que acabo de crear.
+- agregarPersonaje($event) es un metodo que se crea en el componente padre, el cual cierra el ciclo, agregando el nuevo personaje.
+```
+
+3- voy al componente padre, a crear el metodo _agregarPeronaje()_
+
+```
+ agregarPeronaje(personaje: Personaje) {
+    if (this.nuevo.nombre !== '') {
+      this.personajes.push(personaje);
+    }
+
+- como se decreto en el componente hijo, el evento emite un personaje y este metodo recibe un personaje, el cual luego se pushea al array que convive en el componente padre.
+```
+
+---
+
+**crear una carpeta con Interfaces** las cuales puedo importar y utilizarlas en cualquier componente del modulo donde se ubica.

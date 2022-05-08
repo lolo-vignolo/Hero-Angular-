@@ -37,3 +37,13 @@ button:focus {
 .p-1 {
   padding: 1px;
 }
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+input {
+  margin: 5px;
+}
