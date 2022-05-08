@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Personaje } from '../interfaces/dbz.interfaces';
+import { DbzService } from '../services/dbz.service';
 
 @Component({
   selector: 'app-agregar',
@@ -16,12 +17,14 @@ export class AgregarComponent {
 
   //envío info al componente padre, de esta forma se puede actualizar el array de personajes. <T>Personaje
   // creo un evento personalizado, el cual envía un nuevo personaje al componente padre
-  @Output() onNewPersonaje: EventEmitter<Personaje> = new EventEmitter();
+  //@Output() onNewPersonaje: EventEmitter<Personaje> = new EventEmitter();
+
+  constructor(private dbzPersonajes: DbzService) {}
 
   //no lamo al preventDefault() por ques estoy uando el FormModule, ver README.
   agregar() {
     if (this.nuevo.nombre !== '') {
-      this.onNewPersonaje.emit(this.nuevo);
+      this.dbzPersonajes.agregarPeronaje(this.nuevo);
 
       this.nuevo = {
         nombre: '',

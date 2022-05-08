@@ -11,20 +11,4 @@ export class MainPageComponent {
     nombre: '',
     poder: 0,
   };
-  personajes: Personaje[] = [
-    {
-      nombre: 'Goku',
-      poder: 50000,
-    },
-    {
-      nombre: 'Vegeta',
-      poder: 20000,
-    },
-  ];
-
-  agregarPeronaje(personaje: Personaje) {
-    if (this.nuevo.nombre !== '') {
-      this.personajes.push(personaje);
-    }
-  }
 }

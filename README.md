@@ -154,9 +154,11 @@ Con FormModule:
 
 **pipes** sirven para tranformar visualmente la información y se cologan luego de un | .
 
+**crear una carpeta con Interfaces** las cuales puedo importar y utilizarlas en cualquier componente del modulo donde se ubica.
+
 ---
 
-🛑**info de componente padre a componente hijo** 🚩🚧
+🛑**info de componente padre a componente hijo - SE ENCUENTRA EN EL REALASE** 🚩🚧
 **@Input() inputPersonajes: Personaje[] = [];**
 comunicacion entre componentes, a diferencia de lo que sucede en ract que uso props, aquí utilizo entre otras cosas el decorador **@Input()** con el cual creeare un elemento con las caract. basicas del elemepo a recibir.
 
@@ -191,7 +193,7 @@ En el HTML hijo:
 
 ```
 
-**Info componente Hijo al componente padre** 😪💥
+**Info componente Hijo al componente padre SE ENCUENTRA EN EL REALASE** 😪💥
 **@Output() onNewPersonaje: EventEmitter<Personaje> = new EventEmitter();** de esta forma lo unico que hago es crear un _evento_ el cual se ejecutará como todos los enventos, en el HTML usando (). Que hace ese evento?.
 1- Lo especifico en el metodo de su componente, en este caso:
 
@@ -228,4 +230,63 @@ Teniendo en cuenta que this.nuevo, es un objeto creado una interface Personajes,
 
 ---
 
-**crear una carpeta con Interfaces** las cuales puedo importar y utilizarlas en cualquier componente del modulo donde se ubica.
+🧨👉 **manejo de data a traves de _servicios_ en este caso enviar info del servicio a los componentes.** ⛔✔👁‍🗨
+Los servicios son de las herramientas mas poderosas que tiene Angunlar, funcionan de una forma muy similar al context de React.
+Comos funciona?.
+
+- Primero debo crear un _servicio_ el cual sera una class con un decorador especial. Por ejemplo
+
+```
+@Injectable()
+export class DbzService {
+
+}
+
+```
+
+- segudo agrego el servicio dentro del modulo donde se manejara la información, para ello necesito hacerlo a traves de un **provicer**.
+
+- tercero, Para enviar la data lo puedo hacer de distintas formas, una de las mas utilizadas es creando un **get** en el servicio, clonando la info que quiero exportar de ese servicio la cual la retornaré en el get.
+
+```
+Teniendo en cuenta que quiero exportar un objeto de personajes que tengo en el servicio, puedo hacer:
+
+  get infoToExport() {
+    return [...this._personajes];
+  }
+```
+
+- Tercero voy al componente donde quiero uilizar información que me facilita este **service** y dentro del contructor de dicho componente llamo al _servicio_. Ejemplo, siendo el **DbzService** el servicio que estoy importando. De esta forma creo una especie de instancia de la información que estoy enviando.
+
+```
+  constructor(private dbzService: DbzService) {}
+
+```
+
+-cuarto, una vez logrado esto utilizo la información, teniendo en cuenta como fue enviada. Ejemplo:
+
+```
+ //de esta forma creo el acceso al service.
+  constructor(private dbzService: DbzService) {}
+
+  //de esta forma traigo la data del service.
+  get infoToReceive() {
+    return this.dbzService.infoToExport;
+  }
+
+```
+
+Luego desde el HTML, puedo utilizar esa info. Por ejemplo en un \*ngFor
+
+```
+<ul>
+  <li *ngFor="let hero of infoToReceive">
+    {{ hero.nombre }} - {{ hero.poder | number }}
+  </li>
+</ul>
+
+```
+
+**lo mismo puedo hacer con un metodo creado en el service**, creo la instancia en el contructor del componente donde lo quiero utilizar, y luego hago una clase de callBack. O sea agrego a ese metodo dentro de un metodo que se encuentr aen el componente el cual se ejecutara siguiendo las ordenes de los codeado en el HTML de ese mismo ocmponente.
+
+---
